@@ -47,3 +47,11 @@ assn_tracker/assn_tracker.sln
 *.suo
 assn_tracker/assn_tracker/assn_tracker.vcxproj.filters
 *.vcxproj
+*.log
+assn_tracker/assn_tracker/Debug/assn_tracker.tlog/assn_tracker.lastbuildstate
+*.tlog
+assn_tracker/assn_tracker/Debug/main.obj
+*.idb
+*.ilk
+assn_tracker/Debug/assn_tracker.pdb
+*.pdb
