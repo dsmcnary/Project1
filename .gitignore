@@ -41,3 +41,9 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+assn_tracker/assn_tracker.opensdf
+*.sdf
+assn_tracker/assn_tracker.sln
+*.suo
+assn_tracker/assn_tracker/assn_tracker.vcxproj.filters
+*.vcxproj
