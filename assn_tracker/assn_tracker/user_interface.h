@@ -1,3 +1,5 @@
+#include "assignmentHandler.h"
+
 #pragma once
 
 class user_interface
@@ -9,5 +11,5 @@ public:
 	void processMenuChoice(char choice);
 
 private: 
-
+	assignmentHandler assnHand;
 };

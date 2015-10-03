@@ -1,4 +1,5 @@
 #include "user_interface.h"
+#include "assignmentHandler.h"
 #include <iostream>
 using namespace std;
 
@@ -51,6 +52,7 @@ void user_interface::processMenuChoice(char choice)
 	case '1':
 		break;
 	case '2':
+		assnHand.getAssnData();
 		break;
 	case '3':
 		break;

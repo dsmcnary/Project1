@@ -55,3 +55,7 @@ assn_tracker/assn_tracker/Debug/main.obj
 *.ilk
 assn_tracker/Debug/assn_tracker.pdb
 *.pdb
+*.obj
+*.aps
+assn_tracker/assn_tracker/assn_tracker.rc
+*.res

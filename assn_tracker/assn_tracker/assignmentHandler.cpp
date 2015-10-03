@@ -1,13 +1,14 @@
 #include "assignmentHandler.h"
+#include <iostream>
 using namespace std;
 
 assignmentHandler::assignmentHandler()
 {
-
+	return;
 }
 
 
-void assignmentHandler::addItem(assignment assn)
+void assignmentHandler::insert(assignment assn)
 {
 	if (assnList.empty())
 		assnList.push_back(assn);
@@ -22,7 +23,27 @@ void assignmentHandler::addItem(assignment assn)
 	}
 }
 
-assignmentHandler::~assignmentHandler()
-{
+assignment assignmentHandler::getAssnData()
+{ 
+	assignment assn;
 
+	Date temp; 
+	string temp2;
+
+	
+	cout << "Assigned Date \"01-01-2015\": ";
+	cin >> temp;
+	assn.setAssignedDate(temp);
+
+	cout << "Due Date \"01-01-2015\": "; 
+	cin >> temp;
+	assn.setDueDate(temp);
+
+	cout << "Description: ";
+	cin >> temp2;
+	assn.setDescription(temp2);
+
+	assn.setStatus(assigned);
+	
+	return assn; 
 }
