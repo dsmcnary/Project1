@@ -10,6 +10,9 @@ assignmentHandler::assignmentHandler()
 
 void assignmentHandler::insert(assignment assn)
 {
+
+	assnList.push_back(assn);
+	/*
 	if (assnList.empty())
 		assnList.push_back(assn);
 
@@ -20,7 +23,7 @@ void assignmentHandler::insert(assignment assn)
 			itr++;
 
 		assnList.insert(itr, assn);
-	}
+	}*/
 }
 
 assignment assignmentHandler::getAssnData()
@@ -46,4 +49,14 @@ assignment assignmentHandler::getAssnData()
 	assn.setStatus(assigned);
 	
 	return assn; 
+}
+
+void assignmentHandler::printAssignments()
+{
+	itr = assnList.begin();
+	while (itr != assnList.end())
+	{
+		itr->printAssignment();
+		itr++;
+	}
 }

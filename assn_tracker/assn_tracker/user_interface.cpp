@@ -13,7 +13,7 @@ void user_interface::displayMenu()
 	for (int i = 0; i < 40; i++)
 		cout << "//";
 
-	cout << endl << endl << endl << endl
+	cout << endl
 		<< "\t\t\t1. Display Assignments" << endl
 		<< "\t\t\t2. Add Assignment" << endl
 		<< "\t\t\t3. Edit Due date" << endl
@@ -22,7 +22,7 @@ void user_interface::displayMenu()
 		<< "\t\t\t6. Number of Late Assignments" << endl
 		<< "\t\t\t7. Save" << endl
 		<< "\t\t\t8. Exit" << endl
-		<< endl << endl << endl << endl;
+		<< endl;
 
 	for (int i = 0; i < 40; i++)
 		cout << "//";
@@ -50,9 +50,10 @@ void user_interface::processMenuChoice(char choice)
 	switch (choice)
 	{
 	case '1':
+		assnHand.printAssignments();
 		break;
 	case '2':
-		assnHand.getAssnData();
+		assnHand.insert(assnHand.getAssnData());
 		break;
 	case '3':
 		break;
@@ -65,6 +66,7 @@ void user_interface::processMenuChoice(char choice)
 	case '7':
 		break;
 	case '8':
+		exit(0);
 		break;
 	}
 }

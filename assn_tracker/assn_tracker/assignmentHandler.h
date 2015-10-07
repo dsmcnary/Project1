@@ -9,6 +9,7 @@ public:
 	assignmentHandler();
 	void insert(assignment assn);
 	assignment getAssnData();
+	void printAssignments();
 	//void removeItem(list<assignment>::iterator iter);
 	//~assignmentHandler();
 

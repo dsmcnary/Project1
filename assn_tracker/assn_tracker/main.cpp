@@ -8,10 +8,11 @@ void displayMenu();
 int main()
 {
 	user_interface userInterface; 
-	userInterface.displayMenu();
-	userInterface.getMenuChoice();
-	userInterface.processMenuChoice(userInterface.getMenuChoice());
 
-	system("PAUSE");
+	while (true)
+	{
+		userInterface.displayMenu();
+		userInterface.processMenuChoice(userInterface.getMenuChoice());
+	}
 	return 0;
 }

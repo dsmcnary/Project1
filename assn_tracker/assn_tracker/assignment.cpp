@@ -51,9 +51,18 @@ void assignment::setStatus(statusOptions s)
 	status = s;
 }
 
-// Other Functions
 
+// Other Functions
 void assignment::printAssignment()
 {
-	cout << dueDate.toString() << ', ' << description << ', ' << assignedDate.toString() << ', ' << status << endl;
+	cout << dueDate.toString() << ", " << description << ", " << assignedDate.toString() << ", ";
+	
+	if (status == 0)
+		cout << "assigned";
+	else if (status == 1)
+		cout << "late";
+	else if (status == 2)
+		cout << "completed";
+	
+	cout << endl;
 }
