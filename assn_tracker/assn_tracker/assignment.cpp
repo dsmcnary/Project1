@@ -33,6 +33,16 @@ statusOptions assignment::getStatus() const
 // Setters
 void assignment::setDueDate(Date d)
 {
+	/*try
+	{
+		d.check_valid();
+	}
+	catch (std::exception)
+	{
+		cout << "ERROR: Invalid Date" << endl;
+		return;
+	}*/
+
 	dueDate = d;
 }
 
@@ -43,6 +53,16 @@ void assignment::setDescription(string d)
 
 void assignment::setAssignedDate(Date d)
 {
+	/*try
+	{
+		d.check_valid();
+	}
+	catch (std::exception)
+	{
+		cout << "ERROR: Invalid Date" << endl;
+		return;
+	}*/
+
 	assignedDate = d;
 }
 
@@ -64,5 +84,22 @@ void assignment::printAssignment()
 	else if (status == 2)
 		cout << "completed";
 	
+	cout << endl;
+}
+
+void assignment::prettyPrintAssignment()
+{
+	cout << "\t\t\tAssigned Date  : " << assignedDate.toString() << endl
+		<< "\t\t\tDue Date       : " << dueDate.toString() << endl
+		<< "\t\t\tDescription    : " << description << endl
+		<< "\t\t\tStatus         : ";
+
+	if (status == 0)
+		cout << "Assigned";
+	else if (status == 1)
+		cout << "Late";
+	else if (status == 2)
+		cout << "Completed";
+
 	cout << endl;
 }

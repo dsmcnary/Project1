@@ -10,6 +10,7 @@ public:
 	void insert(assignment assn);
 	assignment getAssnData();
 	void printAssignments();
+	void editAssignment();
 	//void removeItem(list<assignment>::iterator iter);
 	//~assignmentHandler();
 

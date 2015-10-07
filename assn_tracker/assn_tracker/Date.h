@@ -299,7 +299,6 @@ public:
 	void setMonth(int theMonth) { month = theMonth; check_valid(); }
 	void setDay(int theDay) { day = theDay; check_valid(); }
 
-
 private:
 	int year;
 	int month;

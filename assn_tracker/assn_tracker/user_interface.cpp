@@ -10,6 +10,8 @@ user_interface::user_interface()
 
 void user_interface::displayMenu()
 {
+	cout << endl; 
+
 	for (int i = 0; i < 40; i++)
 		cout << "//";
 
@@ -26,6 +28,8 @@ void user_interface::displayMenu()
 
 	for (int i = 0; i < 40; i++)
 		cout << "//";
+
+	cout << endl;
 }
 
 char user_interface::getMenuChoice()
@@ -56,6 +60,7 @@ void user_interface::processMenuChoice(char choice)
 		assnHand.insert(assnHand.getAssnData());
 		break;
 	case '3':
+		assnHand.editAssignment();
 		break;
 	case '4':
 		break;

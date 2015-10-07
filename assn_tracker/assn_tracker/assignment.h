@@ -23,6 +23,7 @@ public:
 	void setAssignedDate(Date d);
 	void setStatus(statusOptions s);
 	void printAssignment();
+	void prettyPrintAssignment();
 
 private:
 	Date dueDate;
