@@ -46,108 +46,133 @@ void assignmentHandler::insert(assignment assn)
 
 assignment assignmentHandler::getAssnData()
 { 
+	// Initialize
 	assignment assn;
+	string desc, clearBuffer;
 
-	Date temp; 
-	string temp2, clearBuffer;
-
-	
+	// Get Assigned Date from User and Set to Assignment
 	cout << "Assigned Date \"01-01-2015\": ";
-	try
-	{
-		cin >> temp;
-	}
-	catch (std::exception)
-	{
-		cout << "ERROR: Invalid Date" << endl;
-		return assn;
-	}
-	
-	assn.setAssignedDate(temp);
+	assn.setAssignedDate(inputDateFromUser());
 
+	// Get Due Date from User and Set to Assignment
 	cout << "Due Date \"01-01-2015\": "; 
-	try
-	{
-		cin >> temp;
-	}
-	catch (std::exception)
-	{
-		cout << "ERROR: Invalid Date" << endl;
-		return assn;
-	}
+	assn.setDueDate(inputDateFromUser());
 
-	assn.setDueDate(temp);
-
+	// Get Description from User and Set to Assignment
 	cout << "Description: ";
-	getline(cin, clearBuffer);
-	getline(cin, temp2);
-	assn.setDescription(temp2);
+	getline(cin, clearBuffer);		// Clear buffer
+	getline(cin, desc);				// get description
+	assn.setDescription(desc);
 
-	assn.setStatus(assigned);
+	// Automatically set status to being assigned
+	assn.setStatus(assigned);		
 	
 	return assn; 
 }
 
 void assignmentHandler::printAssignments()
 {
-	itr = assnList.begin();
-	while (itr != assnList.end())
+	// Iterate through list and display each assignment screen
+	for (itr = assnList.begin(); itr != assnList.end(); itr++)
 	{
 		itr->printAssignment();
-		itr++;
 	}
 }
 
-void assignmentHandler::editAssignment()
+void assignmentHandler::editAssignment(int choice)
 {
-	Date assignedDate; 
-	char choice = '\0';
-	Date dueDate;
+	// Initialize
+	Date assignedDate;
 	string desc = "", clearBuffer;
 
+	// Get Assigned Date from User
 	cout << "// Editing Assignment //" << endl
 		<< "Assigned Date \"01-01-2015\": ";
-	cin >> assignedDate;
+	assignedDate = inputDateFromUser();
 
+	// Find desired assignment in list
 	for (itr = assnList.begin(); itr != assnList.end(); itr++)
 	{
 		if (itr->getAssignedDate() == assignedDate)
 		{
+			// Display current assignmnet
 			cout << "\t\t\tCurrent Assignment: " << endl;
 			itr->prettyPrintAssignment();
 
-			cout << "Edit 1) Due Date or 2) Description or 3) Both: ";
-			cin >> choice;
-
+			// Change Due Date / Description based on input
 			switch (choice)
 			{
-				case '1':
+				case 1:
+					// Get New Date from user
 					cout << "New Due Date: ";
-					cin >> dueDate;
-					itr->setDueDate(dueDate);
+					itr->setDueDate(inputDateFromUser());	// Set new due date
 					break;
-				case '2':
+				case 2:
+					// Get New Description from user
 					cout << "New Description: ";
-					getline(cin, clearBuffer);
+					getline(cin, clearBuffer);	// empty buffer
 					getline(cin, desc);
-					itr->setDescription(desc);
-					break;
-				case '3':
-					cout << "New Due Date: ";
-					cin >> dueDate;
-					itr->setDueDate(dueDate);
-					cout << "New Description: ";
-					getline(cin, clearBuffer);
-					getline(cin, desc);
-					itr->setDescription(desc);
+					itr->setDescription(desc);	// Set the new description
 					break;
 			}
 			
-			return;
+			return;	// return after finding assignment in list
 		}
 	}
 
+	// Assignment with given assigned date not found in list
 	cerr << "ERROR: No assignment has been assigned on: " << assignedDate.toString() << endl;
-
 	return;
+}
+
+void assignmentHandler::completeAssignment()
+{
+	// Initialize
+	Date assignedDate, completeDate;
+	char choice = '\0';
+
+	// Get assignedDate for assignment to complete
+	cout << "// Completing Assignment //" << endl
+		<< "Assigned Date \"01-01-2015\": ";
+	cin >> assignedDate;
+
+	cout << "Completed Date \"01-01-2015\": ";
+	cin >> completeDate;
+
+	// Find assignment in list
+	for (itr = assnList.begin(); itr != assnList.end(); itr++)
+	{
+		if (itr->getAssignedDate() == assignedDate)
+		{
+			// Complete the assignment
+			if (completeDate > itr->getDueDate())
+				itr->setStatus(completed);
+			else
+				itr->setStatus(late);
+			return;		// return after finding assignment in list
+		}
+	}
+
+	// Assignment with given assigned date not found in list 
+	cerr << "ERROR: No assignment has been assigned on: " << assignedDate.toString() << endl;
+}
+
+Date assignmentHandler::inputDateFromUser()
+{
+	// Initialize
+	Date inputDate;
+
+	// Try to accept a date from the user
+	try
+	{
+		cin >> inputDate;
+	}
+	// If it throws an exception, catch it and let the user know
+	catch (std::exception)
+	{
+		cerr << "ERROR: Invalid Date" << endl;
+	}
+
+	// Return the date - the main program will handle it further
+	return inputDate;
 }

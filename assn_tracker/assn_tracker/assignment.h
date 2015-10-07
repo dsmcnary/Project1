@@ -30,5 +30,4 @@ private:
 	string description;
 	Date assignedDate;
 	statusOptions status;
-
 };

@@ -60,11 +60,13 @@ void user_interface::processMenuChoice(char choice)
 		assnHand.insert(assnHand.getAssnData());
 		break;
 	case '3':
-		assnHand.editAssignment();
+		assnHand.editAssignment(1);
 		break;
 	case '4':
+		assnHand.editAssignment(2);
 		break;
 	case '5':
+		assnHand.completeAssignment();
 		break;
 	case '6':
 		break;
