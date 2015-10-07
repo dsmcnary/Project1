@@ -1,10 +1,11 @@
 #include "assignmentHandler.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 assignmentHandler::assignmentHandler()
 {
-	return;
+	load();
 }
 
 
@@ -105,8 +106,17 @@ void assignmentHandler::editAssignment(int choice)
 				case 1:
 					// Get New Date from user
 					cout << "New Due Date: ";
-					itr->setDueDate(inputDateFromUser());	// Set new due date
-					break;
+					if (itr->getDueDate() <= itr->getAssignedDate())
+					{
+						cerr << "ERROR: Due Date must be greater than the Assigned Date" << endl;
+						return;
+					}
+					else
+					{
+						itr->setDueDate(inputDateFromUser());	// Set new due date
+						break;
+					}
+
 				case 2:
 					// Get New Description from user
 					cout << "New Description: ";
@@ -134,10 +144,10 @@ void assignmentHandler::completeAssignment()
 	// Get assignedDate for assignment to complete
 	cout << "// Completing Assignment //" << endl
 		<< "Assigned Date \"01-01-2015\": ";
-	cin >> assignedDate;
+	assignedDate = inputDateFromUser();
 
 	cout << "Completed Date \"01-01-2015\": ";
-	cin >> completeDate;
+	completeDate = inputDateFromUser();
 
 	// Find assignment in list
 	for (itr = assnList.begin(); itr != assnList.end(); itr++)
@@ -175,4 +185,95 @@ Date assignmentHandler::inputDateFromUser()
 
 	// Return the date - the main program will handle it further
 	return inputDate;
+}
+
+int assignmentHandler::countLate()
+{
+	int lateCount = 0; // start count at zero
+
+	// Iterate through assignment list
+	for (itr = assnList.begin(); itr != assnList.end(); itr++)
+	{
+		if (itr->getStatus() == late)
+			lateCount++;		// if late then increment lateCount
+	}
+
+	cout << "Late Assignments: " << lateCount << endl;
+
+	return lateCount;
+}
+
+void assignmentHandler::save()
+{
+	ofstream fout;
+	fout.open("assignment_list.csv");
+
+	for (itr = assnList.begin(); itr != assnList.end(); itr++)
+	{
+		fout << itr->displayString();
+	}
+
+	fout.close();
+}
+
+void assignmentHandler::load()
+{
+	ifstream fin;
+	string assignDateStr, dueDateStr, stsStr;
+	Date assignDate, dueDate;
+	string desc;
+	statusOptions sts;
+	assignment assn;
+	
+	fin.open("assignment_list.csv");
+
+
+	while (!fin.eof())
+	{
+		if (fin >> dueDateStr >> desc >> assignDateStr >> stsStr)
+		{
+			dueDateStr = dueDateStr.substr(0, dueDateStr.length() - 1);
+			assignDateStr = assignDateStr.substr(0, assignDateStr.length() - 1);
+			desc = desc.substr(0, desc.length() - 1);
+
+			assignDate = convertStrToDate(assignDateStr);
+			dueDate = convertStrToDate(dueDateStr);
+
+			assn = assignment(dueDate, desc, assignDate, stsStr);
+
+			assn.prettyPrintAssignment();
+
+			insert(assn);
+
+			system("PAUSE");
+		}
+		else
+			break;
+	}
+
+	fin.close();
+}
+
+Date assignmentHandler::convertStrToDate(string s)
+{
+	// Input String: 01/01/2015
+	// Output: Date object
+
+	// Initialize
+	int day, month, year;
+
+	// month is upto the first '/'
+	month = stoi(s.substr(0, s.find('/')));
+
+	// Set the remaining part of the string to s (excluding the /)
+	s = s.substr(s.find('/')+1);
+	
+	// day is upto the first '/'
+	day = stoi(s.substr(0, s.find('/')));
+
+	// Set the remaining part of the string to year (excluding the /)
+	year = stoi(s.substr(s.find('/')+1));
+
+	// construct a date and pass it back to caller
+	return Date(year, month, day);
 }

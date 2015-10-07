@@ -4,9 +4,31 @@
 // Constructors
 assignment::assignment()
 {
-
+	;
 }
 
+assignment::assignment(Date due, string desc, Date assign, statusOptions sts)
+{
+	setDueDate(due);
+	setDescription(desc);
+	setAssignedDate(assign);
+	setStatus(sts);
+}
+
+assignment::assignment(Date due, string desc, Date assign, string sts)
+{
+	setDueDate(due);
+	setDescription(desc);
+	setAssignedDate(assign);
+
+	if (sts == "assigned")
+		setStatus(assigned);
+	else if (sts == "completed")
+		setStatus(completed);
+	else if (sts == "late")
+		setStatus(late);
+
+}
 
 // Getters
 Date assignment::getDueDate() const
@@ -33,16 +55,6 @@ statusOptions assignment::getStatus() const
 // Setters
 void assignment::setDueDate(Date d)
 {
-	/*try
-	{
-		d.check_valid();
-	}
-	catch (std::exception)
-	{
-		cout << "ERROR: Invalid Date" << endl;
-		return;
-	}*/
-
 	dueDate = d;
 }
 
@@ -53,16 +65,6 @@ void assignment::setDescription(string d)
 
 void assignment::setAssignedDate(Date d)
 {
-	/*try
-	{
-		d.check_valid();
-	}
-	catch (std::exception)
-	{
-		cout << "ERROR: Invalid Date" << endl;
-		return;
-	}*/
-
 	assignedDate = d;
 }
 
@@ -85,6 +87,22 @@ void assignment::printAssignment()
 		cout << "completed";
 	
 	cout << endl;
+}
+
+string assignment::displayString()
+{
+	string s; 
+
+	s = dueDate.toString() + ", " + description + ", " + assignedDate.toString() + ", ";
+
+	if (status == 0)
+		s += "assigned\n";
+	else if (status == 1)
+		s += "late\n";
+	else if (status == 2)
+		s += "completed\n";
+
+	return s;
 }
 
 void assignment::prettyPrintAssignment()

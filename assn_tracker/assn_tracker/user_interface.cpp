@@ -69,8 +69,10 @@ void user_interface::processMenuChoice(char choice)
 		assnHand.completeAssignment();
 		break;
 	case '6':
+		assnHand.countLate();
 		break;
 	case '7':
+		assnHand.save();
 		break;
 	case '8':
 		exit(0);

@@ -14,6 +14,8 @@ class assignment
 {
 public:
 	assignment();
+	assignment(Date due, string desc, Date assign, statusOptions sts);
+	assignment(Date due, string desc, Date assign, string sts);
 	Date getDueDate() const;
 	string getDescription() const;
 	Date getAssignedDate() const;
@@ -23,6 +25,7 @@ public:
 	void setAssignedDate(Date d);
 	void setStatus(statusOptions s);
 	void printAssignment();
+	string displayString();
 	void prettyPrintAssignment();
 
 private:

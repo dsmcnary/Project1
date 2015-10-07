@@ -12,9 +12,13 @@ public:
 	void printAssignments();
 	void editAssignment(int choice);
 	void completeAssignment();
-	Date inputDateFromUser();
+	int countLate();
+	void save();
+	void load();
 
 private:
 	list<assignment> assnList;
 	list<assignment>::iterator itr;
+	Date inputDateFromUser();
+	Date convertStrToDate(string s);
 };
