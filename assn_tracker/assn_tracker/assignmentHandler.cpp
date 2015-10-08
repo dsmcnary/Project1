@@ -1,14 +1,21 @@
+// Daniel McNary
+// CS 303: Data Structures
+// Prof. Kuhail
+// 10/07/2015
+// Project 1A: Assignment Tracker
+
 #include "assignmentHandler.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
 
+// Default constructor
 assignmentHandler::assignmentHandler()
 {
-	load();
+	load();			// Automatically load assignments from file when starting
 }
 
-
+// Inserts an assignment in order of dueDate to the list
 void assignmentHandler::insert(assignment assn)
 {
 	// Check if Assigned Date already exists
@@ -27,8 +34,6 @@ void assignmentHandler::insert(assignment assn)
 		cerr << "ERROR: Due Date must be greater than the Assigned Date" << endl;
 		return;
 	}
-		
-	//assnList.push_back(assn);
 	
     // If the list is empty, just add the assignment
     if (assnList.empty())
@@ -37,19 +42,22 @@ void assignmentHandler::insert(assignment assn)
     // Special case for only one assn in the list
     else if (assnList.size() == 1)
     {
-		itr = assnList.begin();
-        if (assn.getDueDate() > itr->getDueDate())
+		// Either put new assn after or before the only item in the list as necessary
+        if (assn.getDueDate() > assnList.begin()->getDueDate())
             assnList.push_back(assn);
         else
             assnList.push_front(assn);
     }
 
+	// No more special cases
+	// Check whether or not the assn should be at the front or back of the list and add as applicable
 	else if (assn.getDueDate() > (--assnList.end())->getDueDate())
 			assnList.push_back(assn);
 
 	else if (assn.getDueDate() <= assnList.begin()->getAssignedDate())
 			assnList.push_front(assn);
 
+	// If still not added, then add as appropriate in the middle of the list
 	else
 	{
 	// As long as there are multiple assn's in the list
@@ -57,9 +65,11 @@ void assignmentHandler::insert(assignment assn)
 		for (itr = assnList.begin(); itr != --assnList.end(); itr++)
 		{
 			itr2 = itr;	// copy current iterator
-			itr2++;
+			itr2++;		// increment to point at next item
+			// Advance the iterator until just before where it should be added
 			if (assn.getDueDate() > itr->getDueDate() && assn.getDueDate() <= itr2->getDueDate())
 			{
+				// add the assignment and exit the loop
 				assnList.insert(itr2, assn);
 				break;
 			}
@@ -67,6 +77,7 @@ void assignmentHandler::insert(assignment assn)
 	}
 }
 
+// Gets the data for an assignment from the user standard input
 assignment assignmentHandler::getAssnData()
 { 
 	// Initialize
@@ -93,17 +104,20 @@ assignment assignmentHandler::getAssnData()
 	return assn; 
 }
 
+// Prints the requested assn's to screen
 void assignmentHandler::printAssignments()
 {
+	// Prompts user for status of assignments to be printed to screen
 	char choice = '\0';
 	cout << "Display 1) All Assignments 2) Assigned Assignments 3) Completed Assignments" << endl;
 	cin >> choice;
 
+	// Iterates through list and prints items with specified status
 	switch (choice)
 	{
 	case '1':
 	{
-		// Iterate through list and display each assignment screen
+		// Iterate through list and display each assignment screen (ALL Assignments)
 		for (itr = assnList.begin(); itr != assnList.end(); itr++)
 		{
 			itr->printAssignment();
@@ -112,7 +126,7 @@ void assignmentHandler::printAssignments()
 	}
 	case '2':
 	{
-		// Iterate through list and display each assignment screen
+		// Iterate through list and display each assignment screen (Assigned status)
 		for (itr = assnList.begin(); itr != assnList.end(); itr++)
 		{
 			if (itr->getStatus() == assigned)
@@ -122,7 +136,7 @@ void assignmentHandler::printAssignments()
 	}
 	case '3':
 	{
-		// Iterate through list and display each assignment screen
+		// Iterate through list and display each assignment screen (Completed or Late status)
 		for (itr = assnList.begin(); itr != assnList.end(); itr++)
 		{
 			if (itr->getStatus() == completed || itr->getStatus() == late)
@@ -133,10 +147,9 @@ void assignmentHandler::printAssignments()
 	}
 
 	return;
-
-
 }
 
+// Edits the dueDate or description based on input from the menu
 void assignmentHandler::editAssignment(int choice)
 {
 	// Initialize
@@ -192,6 +205,7 @@ void assignmentHandler::editAssignment(int choice)
 	return;
 }
 
+// Marks an assignment as complete or late
 void assignmentHandler::completeAssignment()
 {
 	// Initialize
@@ -224,6 +238,7 @@ void assignmentHandler::completeAssignment()
 	cerr << "ERROR: No assignment has been assigned on: " << assignedDate.toString() << endl;
 }
 
+// Gets a date from the user and returns it
 Date assignmentHandler::inputDateFromUser()
 {
 	// Initialize
@@ -244,6 +259,7 @@ Date assignmentHandler::inputDateFromUser()
 	return inputDate;
 }
 
+// Adds up how many late assignments exist
 int assignmentHandler::countLate()
 {
 	int lateCount = 0; // start count at zero
@@ -260,58 +276,63 @@ int assignmentHandler::countLate()
 	return lateCount;
 }
 
+// Saves all of the assignments to file
 void assignmentHandler::save()
 {
+	// Initialization
 	ofstream fout;
-	fout.open("assignment_list.csv");
+	fout.open("assignment_list.csv");	// open file
 
+	// Iterate through the list of assignments
 	for (itr = assnList.begin(); itr != assnList.end(); itr++)
 	{
-		fout << itr->displayString();
+		fout << itr->displayString();	// print displayString to file
 	}
 
-	fout.close();
+	fout.close();	// close file
 }
 
+// Loads all of the assignments from a file
 void assignmentHandler::load()
 {
+	// Initialization
 	ifstream fin;
 	string assignDateStr, dueDateStr, stsStr;
 	Date assignDate, dueDate;
 	string desc;
 	assignment assn;
 	
-	fin.open("assignment_list.csv");
+	fin.open("assignment_list.csv");	// Open input stream
 
 
-	while (!fin.eof())
+	while (!fin.eof())	// Keep reading until end of file
 	{
-		if (fin >> dueDateStr >> desc >> assignDateStr >> stsStr)
+		if (fin >> dueDateStr >> desc >> assignDateStr >> stsStr)		// as long as more inputs
 		{
+			// remove the comma at the end of each field for first three fields
 			dueDateStr = dueDateStr.substr(0, dueDateStr.length() - 1);
 			assignDateStr = assignDateStr.substr(0, assignDateStr.length() - 1);
 			desc = desc.substr(0, desc.length() - 1);
 
+			// convert the string 01/01/2015 to a Date item
 			assignDate = convertStrToDate(assignDateStr);
 			dueDate = convertStrToDate(dueDateStr);
 
-			assn = assignment(dueDate, desc, assignDate, stsStr);
-
-			insert(assn);
+			// Call the assignment constructor and pass it to be inserted to the list
+			insert( assignment(dueDate, desc, assignDate, stsStr));
 		}
 
+		// Ignore the last empty line in a file or any line without proper input fields
 		else
 			break;
 	}
 
-	fin.close();
+	fin.close();	// Close the files
 }
 
+// Converts a string 01/01/2015 to a Date item
 Date assignmentHandler::convertStrToDate(string s)
 {
-	// Input String: 01/01/2015
-	// Output: Date object
-
 	// Initialize
 	int day, month, year;
 
