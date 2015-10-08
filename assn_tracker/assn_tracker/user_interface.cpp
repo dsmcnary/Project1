@@ -75,6 +75,7 @@ void user_interface::processMenuChoice(char choice)
 		assnHand.save();
 		break;
 	case '8':
+		assnHand.save(); // Auto Save on Exit
 		exit(0);
 		break;
 	}

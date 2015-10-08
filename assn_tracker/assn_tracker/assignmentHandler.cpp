@@ -27,22 +27,44 @@ void assignmentHandler::insert(assignment assn)
 		cerr << "ERROR: Due Date must be greater than the Assigned Date" << endl;
 		return;
 	}
-	else
-	{
-		assnList.push_back(assn);
-	}
-	/*
-	if (assnList.empty())
-		assnList.push_back(assn);
-
-	else
-	{
+		
+	//assnList.push_back(assn);
+	
+    // If the list is empty, just add the assignment
+    if (assnList.empty())
+        assnList.push_back(assn);
+        
+    // Special case for only one assn in the list
+    else if (assnList.size() == 1)
+    {
 		itr = assnList.begin();
-		while (assn.getDueDate() > itr->getDueDate() || itr == assnList.end() )
-			itr++;
+        if (assn.getDueDate() > itr->getDueDate())
+            assnList.push_back(assn);
+        else
+            assnList.push_front(assn);
+    }
 
-		assnList.insert(itr, assn);
-	}*/
+	else if (assn.getDueDate() > (--assnList.end())->getDueDate())
+			assnList.push_back(assn);
+
+	else if (assn.getDueDate() <= assnList.begin()->getAssignedDate())
+			assnList.push_front(assn);
+
+	else
+	{
+	// As long as there are multiple assn's in the list
+		list<assignment>::iterator itr2;
+		for (itr = assnList.begin(); itr != --assnList.end(); itr++)
+		{
+			itr2 = itr;	// copy current iterator
+			itr2++;
+			if (assn.getDueDate() > itr->getDueDate() && assn.getDueDate() <= itr2->getDueDate())
+			{
+				assnList.insert(itr2, assn);
+				break;
+			}
+		}
+	}
 }
 
 assignment assignmentHandler::getAssnData()
@@ -73,11 +95,46 @@ assignment assignmentHandler::getAssnData()
 
 void assignmentHandler::printAssignments()
 {
-	// Iterate through list and display each assignment screen
-	for (itr = assnList.begin(); itr != assnList.end(); itr++)
+	char choice = '\0';
+	cout << "Display 1) All Assignments 2) Assigned Assignments 3) Completed Assignments" << endl;
+	cin >> choice;
+
+	switch (choice)
 	{
-		itr->printAssignment();
+	case '1':
+	{
+		// Iterate through list and display each assignment screen
+		for (itr = assnList.begin(); itr != assnList.end(); itr++)
+		{
+			itr->printAssignment();
+		}
+		break;
 	}
+	case '2':
+	{
+		// Iterate through list and display each assignment screen
+		for (itr = assnList.begin(); itr != assnList.end(); itr++)
+		{
+			if (itr->getStatus() == assigned)
+				itr->printAssignment();
+		}
+		break;
+	}
+	case '3':
+	{
+		// Iterate through list and display each assignment screen
+		for (itr = assnList.begin(); itr != assnList.end(); itr++)
+		{
+			if (itr->getStatus() == completed || itr->getStatus() == late)
+				itr->printAssignment();
+		}
+		break;
+	}
+	}
+
+	return;
+
+
 }
 
 void assignmentHandler::editAssignment(int choice)
@@ -222,7 +279,6 @@ void assignmentHandler::load()
 	string assignDateStr, dueDateStr, stsStr;
 	Date assignDate, dueDate;
 	string desc;
-	statusOptions sts;
 	assignment assn;
 	
 	fin.open("assignment_list.csv");
@@ -241,12 +297,9 @@ void assignmentHandler::load()
 
 			assn = assignment(dueDate, desc, assignDate, stsStr);
 
-			assn.prettyPrintAssignment();
-
 			insert(assn);
-
-			system("PAUSE");
 		}
+
 		else
 			break;
 	}
