@@ -227,9 +227,9 @@ void assignmentHandler::completeAssignment()
 		{
 			// Complete the assignment
 			if (completeDate > itr->getDueDate())
-				itr->setStatus(completed);
-			else
 				itr->setStatus(late);
+			else
+				itr->setStatus(completed);
 			return;		// return after finding assignment in list
 		}
 	}
