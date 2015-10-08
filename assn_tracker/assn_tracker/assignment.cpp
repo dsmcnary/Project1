@@ -27,7 +27,6 @@ assignment::assignment(Date due, string desc, Date assign, string sts)
 		setStatus(completed);
 	else if (sts == "late")
 		setStatus(late);
-
 }
 
 // Getters
@@ -82,9 +81,9 @@ void assignment::printAssignment()
 	if (status == 0)
 		cout << "assigned";
 	else if (status == 1)
-		cout << "late";
-	else if (status == 2)
 		cout << "completed";
+	else if (status == 2)
+		cout << "late";
 	
 	cout << endl;
 }
@@ -98,9 +97,9 @@ string assignment::displayString()
 	if (status == 0)
 		s += "assigned\n";
 	else if (status == 1)
-		s += "late\n";
-	else if (status == 2)
 		s += "completed\n";
+	else if (status == 2)
+		s += "late\n";
 
 	return s;
 }
